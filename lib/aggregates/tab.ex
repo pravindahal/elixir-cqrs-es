@@ -48,7 +48,7 @@ defmodule Cqrses.Aggregates.Tab do
 
   def perform(tab, %MarkDrinksServed{ id: id, menu_numbers: menu_numbers }) do
     unless drinks_outstanding?(tab.outstanding_drinks, menu_numbers) do
-      raise Cqrses.Commands.DrinksNotOutstanding
+      raise Cqrses.Exceptions.DrinksNotOutstanding
     end
 
     [
@@ -57,7 +57,7 @@ defmodule Cqrses.Aggregates.Tab do
   end
 
   def perform(tab, %PlaceOrder{ id: id, items: items }) do
-    if !tab.open, do: raise Cqrses.Commands.TabNotOpen
+    if !tab.open, do: raise Cqrses.Exceptions.TabNotOpen
 
     order_drinks(id, items) ++ order_food(id, items)
   end
