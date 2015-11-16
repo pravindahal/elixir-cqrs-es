@@ -39,7 +39,7 @@ defmodule Cqrses.Aggregates.TabTest do
     id = UUID.uuid1()
     command = %PlaceOrder{ id: id, items: [ %OrderedItem{} ] }
 
-    assert_raise Cqrses.Commands.TabNotOpen, fn -> Tab.perform(%Tab{}, command) end
+    assert_raise Cqrses.Exceptions.TabNotOpen, fn -> Tab.perform(%Tab{}, command) end
   end
 
   test "can place drinks order", context do
@@ -91,7 +91,7 @@ defmodule Cqrses.Aggregates.TabTest do
 
     command = %MarkDrinksServed{ id: id, menu_numbers: [context.drink1.menu_number] }
 
-    assert_raise Cqrses.Commands.DrinksNotOutstanding, fn -> Tab.perform(tab, command) end
+    assert_raise Cqrses.Exceptions.DrinksNotOutstanding, fn -> Tab.perform(tab, command) end
   end
 
   test "can not serve an ordered drink twice", context do
@@ -103,7 +103,7 @@ defmodule Cqrses.Aggregates.TabTest do
 
     command = %MarkDrinksServed{ id: id, menu_numbers: [context.drink1.menu_number] }
 
-    assert_raise Cqrses.Commands.DrinksNotOutstanding, fn -> Tab.perform(tab, command) end
+    assert_raise Cqrses.Exceptions.DrinksNotOutstanding, fn -> Tab.perform(tab, command) end
   end
 
   test "can close tab with tip", context do
